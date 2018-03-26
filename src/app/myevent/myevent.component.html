@@ -1,0 +1,11 @@
+<div class="event" colored [myevent]="myevent"> <!--colored-->
+    <span *ngIf="myevent.getBind()" class="unsubscribe" (click)="unsubscribe(id_user, myevent.getId())">❎</span>
+    <span *ngIf="!myevent.getBind()" class="subscribe" (click)="subscribe(id_user, myevent.getId())">🆗</span>
+    <h3> {{ myevent.getName() }} </h3>
+    <h4><i> du {{ myevent.getDatedeb() | date:'dd/MM/yyyy' }} </i></h4>
+    <h4><i> du {{ myevent.getDatefin() | date:'dd/MM/yyyy' }} </i></h4>
+    <p> situé {{ myevent.getPlace() | resume : 5 }} </p>
+    <p> Latitude {{ myevent.getLatitude() }} </p>
+    <p> Longitude {{ myevent.getLongitude() }} </p>
+    <p> Categorie {{ myevent.getId_categ() }} </p>
+</div>

@@ -1,0 +1,13 @@
+<h1>
+  Homepage
+</h1>
+<h2> utilisateur {{ id_user}}</h2>
+<nav>
+  <ul>
+      <li> <a routerLink=""> Déconnexion </a> </li>
+      <li> <a routerLink="events"> Tous les événements </a> </li>
+      <li *ngFor="let categ of categs">
+          <a [routerLink]="['events', categ.id]"> Evénements '{{ categ.label}}' </a>
+      </li>
+  </ul>
+</nav>

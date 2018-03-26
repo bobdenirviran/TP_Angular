@@ -1,0 +1,11 @@
+<div class="form">
+  <label>
+    <span>Username</span>
+    <input id="username" (blur)="checkUsername()" type="text" [(ngModel)]="username"/>
+  </label>
+  <label>
+    <span>Password</span>
+    <input id="password" type="text" [(ngModel)]="password"/>
+  </label>
+  <button (click)="login()">Envoi</button>
+</div>

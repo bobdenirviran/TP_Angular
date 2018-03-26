@@ -1,0 +1,11 @@
+<h2> utilisateur {{ id_user}}</h2>
+<div class="form">
+    <a routerLink="home/events"> Retour vers la homepage </a>
+    <label>
+      <span>Filtre sur le nom de l'événement</span>
+      <input type="text"/>
+    </label>
+  </div>
+<div class="container">
+  <app-myevent *ngFor="let myevent of myevents" [myevent]="myevent"></app-myevent>
+</div>
