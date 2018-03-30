@@ -1,25 +1,37 @@
 .event
 {
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 150px;
+    height: 150px;
     padding: 10px;
     margin: 10px;
     background-color: grey;
     text-align: center;
 }
+.event h4
+{
+    margin-bottom:0;}
 .event span
 {
     position:absolute;
     cursor:pointer;
 }
+.event p
+{
+    margin:0;
+    font-size: 12px;
+}
 .subscribe
 {
     right:25px;
     top:5px;
+    font-size: 10px;
+    background-color: green;
 }
 .unsubscribe
 {
     right:5px;
     top:5px;
+    font-size: 10px;
+    background-color: red;
 }

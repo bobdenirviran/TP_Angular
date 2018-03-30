@@ -1,3 +1,4 @@
+import { ConnectService } from './services/connect.service';
 import { RouterModule } from '@angular/router'; // pour utiliser le router
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core'; 
@@ -12,7 +13,6 @@ import { routes } from './routes';
 import { ResumePipe } from './pipes/resume.pipe';
 import { ColorDirective } from './directives/color.directives';
 import { LoginComponent } from './login/login.component';
-import { SaveUserId } from './models/SaveUserId';
 
 @NgModule({
   declarations: [ // component, Pipe, Directives
@@ -31,7 +31,7 @@ import { SaveUserId } from './models/SaveUserId';
     FormsModule,
     RouterModule.forRoot( routes )
   ],
-  providers: [SaveUserId], // services
+  providers: [ConnectService], // services globaux à utiliser sur tous les component
   bootstrap: [AppComponent] // composant sur lequel on démarre l'application
 })
 export class AppModule {}

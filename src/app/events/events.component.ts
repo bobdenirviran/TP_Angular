@@ -1,9 +1,10 @@
+import {ConnectService} from '../services/connect.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { MyEventService } from '../services/myevent.service';
 import { MyEvents, MyEventLiteral } from '../models/MyEvents';
 import { Categs, CategLiteral } from '../models/Categs';
 import { Binds, BindLiteral } from '../models/Binds';
-import { SaveUserId } from '../models/SaveUserId';
+import { Users } from '../models/Users';
 
 // routes parameter
 import { ActivatedRoute } from '@angular/router';
@@ -17,29 +18,29 @@ import { ActivatedRoute } from '@angular/router';
 export class EventsComponent implements OnInit
 {
 
-  mybinds: Binds[] = [];
-  myevents: MyEvents[] = [];
-  my_used_event: MyEvents = new MyEvents("", new Date(), new Date(), "", 0, 0, 0);
+  public mybinds: Binds[] = [];
+  public myevents: MyEvents[] = [];
+  public myevents_filtered: MyEvents[] = [];
+  public filter: string;
+  public my_used_event: MyEvents = new MyEvents("", new Date(), new Date(), "", 0, 0, 0);
 
   @Input() public myevent: MyEvents;
-  public id_user: number;
+  public user: Users;
 
-  constructor(private MyEventService: MyEventService, private activatedRoute: ActivatedRoute, private saveuserid: SaveUserId )
-  {
-    this.id_user = saveuserid.getSaveUserId();
+  constructor(private myEventService: MyEventService, private LoginService: ConnectService, private activatedRoute: ActivatedRoute ) {
+    this.user = this.LoginService.getUser();
   }
 
   ngOnInit(): void
   {
     this.activatedRoute.params.subscribe(
-      (data) => {
+      (data) => { 
         this.myevents = [];
         this.mybinds = [];
         const id: number = data.id_categ;
-        this.retrieveAllBindsByUser(this.id_user, () => {
+        this.retrieveAllBindsByUser(this.user.getId(), () => {
           if(!id) {
             this.retrieveAllEvents( () => {
-              console.log(this.myevents);
               for( let myevent of this.myevents)
               {
                 for( let mybind of this.mybinds)
@@ -64,9 +65,24 @@ export class EventsComponent implements OnInit
     )
   }
 
+  getEventsFiltered()
+  {
+    this.myevents_filtered = [];
+    for( let myevent of this.myevents ) 
+    {
+      const wfilter: RegExp = new RegExp( this.filter, "i");
+      let result = myevent['name'].search( wfilter );
+      // let result = myevent['name'].toLowerCase().indexOf(this.filter.toLowerCase());
+      if( result != -1)
+      {
+        this.myevents_filtered.push(myevent);
+      }
+    }
+  }
+
   retrieveAllBindsByUser(id_user, callback: Function)
   {
-    this.MyEventService.getAllBindsByUserId(id_user).subscribe(
+    this.myEventService.getAllBindsByUserId(id_user).subscribe(
       (data)=>{ console.log(data);
       if(data.success){
         this.populateBinds(data.events);
@@ -83,12 +99,11 @@ export class EventsComponent implements OnInit
     for( let mybind_json of events)
     {
       const mybind: Binds = new Binds(
-        this.id_user,
+        this.user.getId(),
         mybind_json.id
       );
       this.mybinds.push(mybind);
     }
-    console.log(this.mybinds);
   }
 
   populateEvents( events: MyEventLiteral[] )
@@ -109,14 +124,14 @@ export class EventsComponent implements OnInit
       );
       myevent.setId(myevent_json.id);
       this.myevents.push(myevent);
+      this.myevents_filtered.push(myevent);
     }
-    console.log(this.myevents);
   }
 
   retrieveAllEvents( callback: Function )
   {
-    this.MyEventService.getAllEvents().subscribe(
-      (data)=>{ console.log(data);
+    this.myEventService.getAllEvents().subscribe(
+      (data)=>{
       if(data.success){
         this.populateEvents(data.events);
       }
@@ -129,7 +144,7 @@ export class EventsComponent implements OnInit
 
   retrieveAllEventsByCategoryId( id )
   {
-    this.MyEventService.getAllEventsByCategoryId( id ).subscribe(
+    this.myEventService.getAllEventsByCategoryId( id ).subscribe(
       (data)=> {
       if(data.success){
         this.populateEvents(data.events);

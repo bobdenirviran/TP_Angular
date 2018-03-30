@@ -58,9 +58,9 @@ export class MyEventService {
     return this.http.get( this.service_url + "binds/users/" + binds.getId_user_bind() + "/events/" + binds.getId_event_bind() ) as  Observable<BindJson> ;
   }
 
-  deleteBind( bind: Binds ): Observable<BindJson>
+  deleteBind( binds: Binds ): Observable<BindJson>
   {
-    return this.http.get( this.service_url + "unbinds/users/" + bind.getId_user_bind() + "/events/" + bind.getId_event_bind() ) as  Observable<BindJson> ;
+    return this.http.get( this.service_url + "unbinds/users/" + binds.getId_user_bind() + "/events/" + binds.getId_event_bind() ) as  Observable<BindJson> ;
   }
 
 }

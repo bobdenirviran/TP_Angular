@@ -1,8 +1,9 @@
+import {ConnectService} from '../services/connect.service';
 import {ActivatedRoute} from '@angular/router';
 import {MyEventService} from '../services/myevent.service';
 import { Component, OnInit } from '@angular/core';
 import {CategLiteral, Categs} from '../models/Categs';
-import { SaveUserId } from '../models/SaveUserId';
+import { Users } from '../models/Users';
 
 @Component({
   selector: 'app-home',
@@ -14,10 +15,10 @@ import { SaveUserId } from '../models/SaveUserId';
 export class HomeComponent implements OnInit {
 
   categs: Categs[] = [];
-  public id_user: number;
+  public user: Users;
 
-  constructor(private MyEventService: MyEventService, private activatedRoute: ActivatedRoute, private saveuserid: SaveUserId ) {
-    this.id_user = saveuserid.getSaveUserId();
+  constructor(private MyEventService: MyEventService, private LoginService: ConnectService, private activatedRoute: ActivatedRoute ) {
+    this.user = this.LoginService.getUser();
   }
 
   ngOnInit(): void 

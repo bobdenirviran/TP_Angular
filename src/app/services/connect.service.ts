@@ -5,7 +5,8 @@ import { Observable } from 'rxjs/Observable';
 
 interface UserJson {
   success: boolean,
-  id: number
+  id: number,
+  username: string
 }
 
 @Injectable()
@@ -24,21 +25,24 @@ export class ConnectService {
   {
     return this.http.get( this.service_url + "users/" + id + "/" + password ) as  Observable<UserJson> ;
   }
-}
-// <?php
-// $userController = new UserController();
-// flight::route("GET /users/@username", [$userController, "getUserExist"]);
-// flight::route("GET /users/@id/@password", [$userController, "getCheckPassword"]);
 
-// <?php
-// $bindController = new BindController();
-// flight::route("OPTIONS /*", [$bindController, "preflight"]);
-// // Récupération des liens évenements d'un utilisateur par l'id
-// // localhost/APIS/TP_API/binds/users/2
-// flight::route("GET /binds/users/@id_user", [$bindController, "getBindsByUserId"]);
-// // Création du lien d'un évènement avec un utilisateur
-// // localhost/APIS/TP_API/binds/users/2/events/9
-// flight::route("GET /binds/users/@id_user/events/@id_event", [$bindController, "bindEventUser"]);
-// // Suppression du lien d'un évènement avec un utilisateur
-// // localhost/APIS/TP_API/unbinds/users/2/events/9
-// flight::route("GET /unbinds/users/@id_user/events/@id_event", [$bindController, "unbindEventUser"]);
+  private user: Users = Users.empty();
+  private user_id: number;
+  private username: string;
+
+  ngOnInit(): void {
+    this.getUser();
+  }
+
+  getUser(): Users {
+    console.log(this.user_id);
+      const storageUser: string = sessionStorage.getItem("user");
+      if( storageUser && ! this.user_id ){
+          const jsonuser: { username: string, user_id: number } = JSON.parse( storageUser );
+          this.user = new Users( jsonuser.username, ""  );
+          this.user.setId(jsonuser.user_id);
+          this.user.setUsername(jsonuser.username);
+      }
+      return this.user;
+  }
+}

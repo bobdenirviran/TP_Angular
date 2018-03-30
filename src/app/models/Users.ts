@@ -1,5 +1,9 @@
 export class Users
 {
+    static empty(): Users {
+        return new Users("", "");
+    }
+
     private id: number;
     private username: string;
     private password: string;
